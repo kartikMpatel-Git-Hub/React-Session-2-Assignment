@@ -14,8 +14,8 @@ function Cart() {
     const totalQty = cart.reduce((n1, n2) => {
         return n1 + n2.qty
     }, 0)
-    console.log(totalAmount);
-    console.log(totalQty);
+    // console.log(totalAmount);
+    // console.log(totalQty);
 
     const handleClearCart = () => {
         clearCart()
@@ -27,6 +27,9 @@ function Cart() {
 
     const redirectToApiProducts = () => {
         navigator("../api-products")
+    }
+    const redirectToCheckout = () => {
+        navigator("../checkout")
     }
 
     return (
@@ -59,7 +62,7 @@ function Cart() {
                             >Clear</button>
                             <button
                                 className={`${isDarkTheme ? "bg-white text-slate-800" : "bg-slate-800 text-white"} p-3 rounded-2xl  font-semibold`}
-                                onClick={handleCheckout}
+                                onClick={redirectToCheckout}
                             >Checkout</button>
                         </div>
                     </>

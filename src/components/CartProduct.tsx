@@ -2,13 +2,14 @@ import { Delete, Minus, Plus, X } from "lucide-react"
 import type { Cart } from "../types/types"
 import { useCart } from "../context/CartContext"
 import { useTheme } from "../context/ThemeContext"
+import { memo, useCallback } from "react"
 
-function CartProduct({cartProduct}:{cartProduct:Cart}) {
+const CartProduct = memo(function CartProduct({cartProduct}:{cartProduct:Cart}) {
 
     const {removeFromCart,increaseQty,decreaseQty} = useCart()
     const {isDarkTheme} = useTheme()
 
-    const handleDeleteFromCart = (id:number)=>{
+    const handleDeleteFromCart = useCallback((id:number)=>{
         if(!id)
             return
         try {
@@ -16,14 +17,15 @@ function CartProduct({cartProduct}:{cartProduct:Cart}) {
         } catch (error) {
             console.log(error);
         }
-    }
+    }, [removeFromCart]);
 
-    const handleIncreaseQty = (id : number)=>{
+    const handleIncreaseQty = useCallback((id : number)=>{
         increaseQty(id)
-    }
-    const handleDecreaseQty = (id : number)=>{
+    }, [increaseQty]);
+    
+    const handleDecreaseQty = useCallback((id : number)=>{
         decreaseQty(id)
-    }   
+    }, [decreaseQty]);
 
   return (
     <div className={`${isDarkTheme ? "bg-slate-800 text-white" : "bg-white text-slate-800"} m-3 flex w-240 rounded-2xl`}>
@@ -61,6 +63,6 @@ function CartProduct({cartProduct}:{cartProduct:Cart}) {
 
     </div>
   )
-}
+})
 
 export default CartProduct
