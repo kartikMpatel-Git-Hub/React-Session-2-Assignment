@@ -1,4 +1,5 @@
 import { useTheme } from "../context/ThemeContext"
+import { memo } from "react"
 
 interface ProductDto {
     id: number,
@@ -10,7 +11,7 @@ interface ProductDto {
     images : string
 }
 
-function Product({ product }: { product: ProductDto }) {
+const Product = memo(function Product({ product }: { product: ProductDto }) {
     const { isDarkTheme } = useTheme()
 
     return (
@@ -35,6 +36,6 @@ function Product({ product }: { product: ProductDto }) {
             </div>
         </div>
     )
-}
+})
 
 export default Product

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { use, useCallback, useEffect, useMemo, useState } from "react"
 import Product from "./Product"
 import { CircleAlert, FileWarning, LoaderIcon, Search, ShoppingCart } from "lucide-react"
 import type{ProductDto} from "../types/types"
@@ -11,13 +11,14 @@ function ApiProducts() {
     const [loadin, setLoading] = useState<boolean>(false)
     const [searchFilter, setSerachFilter] = useState<string>("")
     const [filteredData, setFilteredData] = useState<ProductDto[]>([])
-    const [categories, setCategories] = useState([])
+    // const [categories, setCategories] = useState([])
     const [categoryFilter,setCategoryFilter] = useState("")
     const {cart,addToCart,removeFromCart} = useCart()
-    const fetchCategories = (products: ProductDto[]) => {
-        const cate: any = [...new Set(products.map((p) => p.category.toString()))]
-        setCategories(cate)
-    }
+    
+    const categories = useMemo(() => {
+        return [...new Set(products.map((p) => p.category.toString()))]
+    }, [products])
+    
     const fetchData = async () => {
 
         try {
@@ -26,7 +27,7 @@ function ApiProducts() {
             const products = data.products
             setProducts(products)
             setFilteredData(products)
-            fetchCategories(products)
+            // fetchCategories(products)
         } catch (error) {
             setProducts([])
         }
@@ -56,14 +57,13 @@ function ApiProducts() {
     }, [searchFilter,categoryFilter])
 
 
-    const handleAddToCart = (product : ProductDto)=>{
+    const handleAddToCart = useCallback((product : ProductDto)=>{
         try {
-            // console.log(product);
             addToCart(product)
         } catch (error) {
             console.log(error);
         }
-    }
+    },[addToCart])
 
     return (
         loadin ? (
